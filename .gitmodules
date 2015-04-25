@@ -1,0 +1,6 @@
+[submodule "vendor/leveldb"]
+	path = vendor/leveldb
+	url = git@github.com:google/leveldb.git
+[submodule "vendor/snappy"]
+	path = vendor/snappy
+	url = git@github.com:google/snappy.git
