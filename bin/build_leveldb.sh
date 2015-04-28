@@ -1,12 +1,13 @@
+#!/bin/sh
+
 set -e
 
 export ROOT_HOME=$(cd `dirname "{0}"` && pwd)
 export SNAPPY_HOME=$(cd `dirname "{0}"` && cd vendor/snappy && pwd)
 export LEVELDB_HOME=$(cd `dirname "{0}"` && cd vendor/leveldb && pwd)
 
-# Build Snappy
 echo --------------------
-echo Snappy
+echo Build Snappy
 echo --------------------
 
 cd $SNAPPY_HOME
@@ -18,9 +19,8 @@ patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/configure.ac.osx.patch
 ./configure --disable-shared --with-pic --prefix=$SNAPPY_HOME
 make install
 
-# Build LevelDB
 echo --------------------
-echo LevelDB
+echo Build LevelDB
 echo --------------------
 
 cd $LEVELDB_HOME
@@ -30,3 +30,11 @@ export CPLUS_INCLUDE_PATH=$SNAPPY_HOME/include
 git clean -fdx
 git reset --hard
 make
+
+echo --------------------
+echo Copy LevelDB library
+echo --------------------
+
+cd $LEVELDB_HOME
+mkdir -p $ROOT_HOME/leveldb-jna/src/main/resources/darwin/
+cp libleveldb.dylib $ROOT_HOME/leveldb-jna/src/main/resources/darwin/
