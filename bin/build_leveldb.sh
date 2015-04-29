@@ -36,5 +36,5 @@ echo Copy LevelDB library
 echo --------------------
 
 cd $LEVELDB_HOME
-mkdir -p $ROOT_HOME/leveldb-jna-core/src/main/resources/darwin/
-cp libleveldb.dylib $ROOT_HOME/leveldb-jna-core/src/main/resources/darwin/
+mkdir -p $ROOT_HOME/leveldb-jna-native/src/main/resources/darwin/
+cp libleveldb.dylib $ROOT_HOME/leveldb-jna-native/src/main/resources/darwin/

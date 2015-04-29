@@ -10,6 +10,7 @@
 
   <modules>
     <module>leveldb-jna-core</module>
+    <module>leveldb-jna-native</module>
   </modules>
 
   <properties>

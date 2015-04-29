@@ -32,6 +32,15 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- LevelDB JNA Native Binaries (dependency for tests only) -->
+
+        <dependency>
+            <groupId>leveldb-jna</groupId>
+            <artifactId>leveldb-jna-native</artifactId>
+            <version>1.18.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
