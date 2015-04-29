@@ -6,11 +6,11 @@
 
     <parent>
         <groupId>leveldb-jna</groupId>
-        <artifactId>leveldb-jna-parent</artifactId>
+        <artifactId>leveldb-jna</artifactId>
         <version>1.18.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>leveldb-jna</artifactId>
+    <artifactId>leveldb-jna-core</artifactId>
 
     <dependencies>
 
