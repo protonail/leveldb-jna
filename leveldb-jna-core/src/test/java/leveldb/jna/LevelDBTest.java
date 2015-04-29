@@ -123,6 +123,84 @@ public class LevelDBTest {
     }
 
     @Test
+    public void write_empty_write_batch() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            options.setCreateIfMissing(true);
+
+            try (LevelDB levelDB = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                try(LevelDBWriteOptions writeOptions = new LevelDBWriteOptions()) {
+                    try(LevelDBWriteBatch writeBatch = new LevelDBWriteBatch()) {
+                        levelDB.write(writeBatch, writeOptions);
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    public void write_write_batch() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            options.setCreateIfMissing(true);
+
+            try (LevelDB levelDB = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                try(LevelDBWriteOptions writeOptions = new LevelDBWriteOptions()) {
+                    byte[] keyForDelete = new byte[] {42};
+                    byte[] valueForDelete = new byte[] {43};
+
+                    byte[] keyForPut = new byte[] {44};
+                    byte[] valueForPut = new byte[] {45};
+
+                    levelDB.put(keyForDelete, valueForDelete, writeOptions);
+
+                    try(LevelDBWriteBatch writeBatch = new LevelDBWriteBatch()) {
+                        writeBatch.delete(keyForDelete);
+                        writeBatch.put(keyForPut, valueForPut);
+
+                        levelDB.write(writeBatch, writeOptions);
+                    }
+
+                    try(LevelDBReadOptions readOptions = new LevelDBReadOptions()) {
+                        Assert.assertNull(levelDB.get(keyForDelete, readOptions));
+                        Assert.assertArrayEquals(valueForPut, levelDB.get(keyForPut, readOptions));
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    public void write_cleared_write_batch() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            options.setCreateIfMissing(true);
+
+            try (LevelDB levelDB = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                try(LevelDBWriteOptions writeOptions = new LevelDBWriteOptions()) {
+                    byte[] keyForDelete = new byte[] {42};
+                    byte[] valueForDelete = new byte[] {43};
+
+                    byte[] keyForPut = new byte[] {44};
+                    byte[] valueForPut = new byte[] {45};
+
+                    levelDB.put(keyForDelete, valueForDelete, writeOptions);
+
+                    try(LevelDBWriteBatch writeBatch = new LevelDBWriteBatch()) {
+                        writeBatch.delete(keyForDelete);
+                        writeBatch.put(keyForPut, valueForPut);
+                        writeBatch.clear();
+
+                        levelDB.write(writeBatch, writeOptions);
+                    }
+
+                    try(LevelDBReadOptions readOptions = new LevelDBReadOptions()) {
+                        Assert.assertArrayEquals(valueForDelete, levelDB.get(keyForDelete, readOptions));
+                        Assert.assertNull(levelDB.get(keyForPut, readOptions));
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     public void delete_null_key() {
         try(LevelDBOptions options = new LevelDBOptions()) {
             options.setCreateIfMissing(true);

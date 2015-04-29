@@ -38,6 +38,12 @@ public class LevelDB implements AutoCloseable {
         LevelDBNative.checkError(error);
     }
 
+    public void write(LevelDBWriteBatch writeBatch, LevelDBWriteOptions writeOptions) {
+        PointerByReference error = new PointerByReference();
+        LevelDBNative.leveldb_write(levelDB, writeOptions.writeOptions, writeBatch.writeBatch, error);
+        LevelDBNative.checkError(error);
+    }
+
     public void delete(byte[] key, LevelDBWriteOptions writeOptions) {
         long keyLength = key != null ? key.length : 0;
         PointerByReference error = new PointerByReference();
