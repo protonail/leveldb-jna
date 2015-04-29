@@ -32,6 +32,7 @@ public class LevelDBTest {
     }
 
     @Test
+    @SuppressWarnings("unused")
     public void open_database_twice() {
         try(LevelDBOptions options = new LevelDBOptions()) {
             options.setCreateIfMissing(true);
