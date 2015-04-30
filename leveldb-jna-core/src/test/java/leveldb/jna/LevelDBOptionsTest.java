@@ -93,4 +93,15 @@ public class LevelDBOptionsTest {
             Assert.assertEquals(8192, options.getBlockSize());
         }
     }
+
+    @Test
+    public void set_block_restart_interval() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            Assert.assertEquals(16, options.getBlockRestartInterval());
+
+            options.setBlockRestartInterval(32);
+
+            Assert.assertEquals(32, options.getBlockRestartInterval());
+        }
+    }
 }

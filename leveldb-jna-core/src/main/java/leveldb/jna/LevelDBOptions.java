@@ -10,6 +10,7 @@ public class LevelDBOptions implements AutoCloseable {
     private long writeBufferSize = 4 * 1024 * 1204;
     private int maxOpenFiles = 1000;
     private long blockSize = 4096;
+    private int blockRestartInterval = 16;
 
     public LevelDBOptions() {
         options = LevelDBNative.leveldb_options_create();
@@ -20,6 +21,7 @@ public class LevelDBOptions implements AutoCloseable {
         setWriteBufferSize(writeBufferSize);
         setMaxOpenFiles(maxOpenFiles);
         setBlockSize(blockSize);
+        setBlockRestartInterval(blockRestartInterval);
     }
 
     public void close() {
@@ -103,6 +105,17 @@ public class LevelDBOptions implements AutoCloseable {
         if (options != null) {
             this.blockSize = blockSize;
             LevelDBNative.leveldb_options_set_block_size(options, blockSize);
+        }
+    }
+
+    public int getBlockRestartInterval() {
+        return blockRestartInterval;
+    }
+
+    public void setBlockRestartInterval(int blockRestartInterval) {
+        if (options != null) {
+            this.blockRestartInterval = blockRestartInterval;
+            LevelDBNative.leveldb_options_set_block_restart_interval(options, blockRestartInterval);
         }
     }
 }
