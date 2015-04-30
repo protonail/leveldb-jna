@@ -14,7 +14,7 @@ cd $SNAPPY_HOME
 git clean -fdx
 git reset --hard
 patch -N $SNAPPY_HOME/autogen.sh $ROOT_HOME/patches/autogen.sh.osx.patch
-patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/configure.ac.osx.patch
+patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/configure.ac.noarch.patch
 ./autogen.sh
 ./configure --disable-shared --with-pic --prefix=$SNAPPY_HOME
 make install
