@@ -321,6 +321,28 @@ public class LevelDBTest {
     }
 
     @Test
+    public void compact_all_range() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            options.setCreateIfMissing(true);
+
+            try (LevelDB levelDB = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                levelDB.compactRange(null, null);
+            }
+        }
+    }
+
+    @Test
+    public void compact_range() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            options.setCreateIfMissing(true);
+
+            try (LevelDB levelDB = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                levelDB.compactRange(new byte[] {'a'}, new byte[] {'z'});
+            }
+        }
+    }
+
+    @Test
     public void repair_not_esists_database() {
         try(LevelDBOptions options = new LevelDBOptions()) {
             LevelDB.repair(testFolder.getRoot().getAbsolutePath(), options);

@@ -88,6 +88,12 @@ public class LevelDB implements AutoCloseable {
         return sizes.getLongArray(0, ranges.length);
     }
 
+    public void compactRange(byte[] startKey, byte[] limitKey) {
+        long startKeyLength = startKey != null ? startKey.length : 0;
+        long limitKeyLength = limitKey != null ? limitKey.length : 0;
+        LevelDBNative.leveldb_compact_range(levelDB, startKey, startKeyLength, limitKey, limitKeyLength);
+    }
+
     public static void repair(String levelDBDirectory, LevelDBOptions options) {
         PointerByReference error = new PointerByReference();
         LevelDBNative.leveldb_repair_db(options.options, levelDBDirectory, error);

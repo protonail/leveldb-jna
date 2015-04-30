@@ -40,7 +40,7 @@ class LevelDBNative {
                                                         Pointer range_limit_key, long[] range_limit_key_len,
                                                         Pointer sizes);
 
-    public static native void leveldb_compact_range(LevelDB levelDB, int num_ranges,
+    public static native void leveldb_compact_range(LevelDB levelDB,
                                                     byte[] start_key, long start_key_len,
                                                     byte[] limit_key, long limit_key_len);
 
