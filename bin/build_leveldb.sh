@@ -36,5 +36,18 @@ echo Copy LevelDB library
 echo --------------------
 
 cd $LEVELDB_HOME
-mkdir -p $ROOT_HOME/leveldb-jna-native/src/main/resources/darwin/
-cp libleveldb.dylib $ROOT_HOME/leveldb-jna-native/src/main/resources/darwin/
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  LEVELDB_FILE=libleveldb.dylib
+  LEVELDB_ARCH=darwin
+elif [[ "$OSTYPE" == "linux"* ]]; then
+  LEVELDB_FILE=libleveldb.so
+  if [[ $(uname -m) == "x86_64" ]]; then
+    LEVELDB_ARCH=linux-x86-64
+  else
+    LEVELDB_ARCH=linux-x86
+  fi
+fi
+
+mkdir -p $ROOT_HOME/leveldb-jna-native/src/main/resources/$LEVELDB_ARCH/
+cp $LEVELDB_FILE $ROOT_HOME/leveldb-jna-native/src/main/resources/$LEVELDB_ARCH/
