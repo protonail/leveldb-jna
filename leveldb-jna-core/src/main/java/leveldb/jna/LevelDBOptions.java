@@ -7,6 +7,7 @@ public class LevelDBOptions implements AutoCloseable {
     private boolean errorIfExists = false;
     private boolean paranoidChecks = false;
     private LevelDBCompressionType compressionType = LevelDBCompressionType.SnappyCompression;
+    private long writeBufferSize = 4 * 1024 * 1204;
 
     public LevelDBOptions() {
         options = LevelDBNative.leveldb_options_create();
@@ -14,6 +15,7 @@ public class LevelDBOptions implements AutoCloseable {
         setErrorIfExists(errorIfExists);
         setParanoidChecks(paranoidChecks);
         setCompressionType(compressionType);
+        setWriteBufferSize(writeBufferSize);
     }
 
     public void close() {
@@ -64,6 +66,17 @@ public class LevelDBOptions implements AutoCloseable {
         if (options != null) {
             this.compressionType = compressionType;
             LevelDBNative.leveldb_options_set_compression(options, compressionType.getCompressionType());
+        }
+    }
+
+    public long getWriteBufferSize() {
+        return writeBufferSize;
+    }
+
+    public void setWriteBufferSize(long writeBufferSize) {
+        if (options != null) {
+            this.writeBufferSize = writeBufferSize;
+            LevelDBNative.leveldb_options_set_write_buffer_size(options, writeBufferSize);
         }
     }
 }

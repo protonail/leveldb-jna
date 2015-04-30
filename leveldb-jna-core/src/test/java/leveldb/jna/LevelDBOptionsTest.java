@@ -60,4 +60,15 @@ public class LevelDBOptionsTest {
             Assert.assertEquals(LevelDBCompressionType.NoCompression, options.getCompressionType());
         }
     }
+
+    @Test
+    public void set_write_buffer_size() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            Assert.assertEquals(4 * 1024 * 1204, options.getWriteBufferSize());
+
+            options.setWriteBufferSize(10 * 1024 * 1204);
+
+            Assert.assertEquals(10 * 1024 * 1204, options.getWriteBufferSize());
+        }
+    }
 }
