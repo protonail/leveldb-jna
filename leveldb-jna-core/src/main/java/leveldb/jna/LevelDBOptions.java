@@ -8,6 +8,7 @@ public class LevelDBOptions implements AutoCloseable {
     private boolean paranoidChecks = false;
     private LevelDBCompressionType compressionType = LevelDBCompressionType.SnappyCompression;
     private long writeBufferSize = 4 * 1024 * 1204;
+    private int maxOpenFiles = 1000;
 
     public LevelDBOptions() {
         options = LevelDBNative.leveldb_options_create();
@@ -16,6 +17,7 @@ public class LevelDBOptions implements AutoCloseable {
         setParanoidChecks(paranoidChecks);
         setCompressionType(compressionType);
         setWriteBufferSize(writeBufferSize);
+        setMaxOpenFiles(maxOpenFiles);
     }
 
     public void close() {
@@ -77,6 +79,17 @@ public class LevelDBOptions implements AutoCloseable {
         if (options != null) {
             this.writeBufferSize = writeBufferSize;
             LevelDBNative.leveldb_options_set_write_buffer_size(options, writeBufferSize);
+        }
+    }
+
+    public int getMaxOpenFiles() {
+        return maxOpenFiles;
+    }
+
+    public void setMaxOpenFiles(int maxOpenFiles) {
+        if (options != null) {
+            this.maxOpenFiles = maxOpenFiles;
+            LevelDBNative.leveldb_options_set_max_open_files(options, maxOpenFiles);
         }
     }
 }

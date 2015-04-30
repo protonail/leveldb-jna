@@ -71,4 +71,15 @@ public class LevelDBOptionsTest {
             Assert.assertEquals(10 * 1024 * 1204, options.getWriteBufferSize());
         }
     }
+
+    @Test
+    public void set_max_open_files() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            Assert.assertEquals(1000, options.getMaxOpenFiles());
+
+            options.setMaxOpenFiles(2000);
+
+            Assert.assertEquals(2000, options.getMaxOpenFiles());
+        }
+    }
 }
