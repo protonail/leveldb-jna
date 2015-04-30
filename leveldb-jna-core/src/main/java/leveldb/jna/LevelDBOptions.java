@@ -9,6 +9,7 @@ public class LevelDBOptions implements AutoCloseable {
     private LevelDBCompressionType compressionType = LevelDBCompressionType.SnappyCompression;
     private long writeBufferSize = 4 * 1024 * 1204;
     private int maxOpenFiles = 1000;
+    private long blockSize = 4096;
 
     public LevelDBOptions() {
         options = LevelDBNative.leveldb_options_create();
@@ -18,6 +19,7 @@ public class LevelDBOptions implements AutoCloseable {
         setCompressionType(compressionType);
         setWriteBufferSize(writeBufferSize);
         setMaxOpenFiles(maxOpenFiles);
+        setBlockSize(blockSize);
     }
 
     public void close() {
@@ -90,6 +92,17 @@ public class LevelDBOptions implements AutoCloseable {
         if (options != null) {
             this.maxOpenFiles = maxOpenFiles;
             LevelDBNative.leveldb_options_set_max_open_files(options, maxOpenFiles);
+        }
+    }
+
+    public long getBlockSize() {
+        return blockSize;
+    }
+
+    public void setBlockSize(long blockSize) {
+        if (options != null) {
+            this.blockSize = blockSize;
+            LevelDBNative.leveldb_options_set_block_size(options, blockSize);
         }
     }
 }

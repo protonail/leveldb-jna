@@ -82,4 +82,15 @@ public class LevelDBOptionsTest {
             Assert.assertEquals(2000, options.getMaxOpenFiles());
         }
     }
+
+    @Test
+    public void set_block_size() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            Assert.assertEquals(4096, options.getBlockSize());
+
+            options.setBlockSize(8192);
+
+            Assert.assertEquals(8192, options.getBlockSize());
+        }
+    }
 }
