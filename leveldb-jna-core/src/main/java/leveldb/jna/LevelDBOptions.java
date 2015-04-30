@@ -5,12 +5,14 @@ public class LevelDBOptions implements AutoCloseable {
 
     private boolean createIfMissing = false;
     private boolean errorIfExists = false;
+    private boolean paranoidChecks = false;
     private LevelDBCompressionType compressionType = LevelDBCompressionType.SnappyCompression;
 
     public LevelDBOptions() {
         options = LevelDBNative.leveldb_options_create();
         setCreateIfMissing(createIfMissing);
         setErrorIfExists(errorIfExists);
+        setParanoidChecks(paranoidChecks);
         setCompressionType(compressionType);
     }
 
@@ -40,6 +42,17 @@ public class LevelDBOptions implements AutoCloseable {
         if (options != null) {
             this.errorIfExists = errorIfExists;
             LevelDBNative.leveldb_options_set_error_if_exists(options, (byte) (errorIfExists ? 1 : 0));
+        }
+    }
+
+    public boolean isParanoidChecks() {
+        return paranoidChecks;
+    }
+
+    public void setParanoidChecks(boolean paranoidChecks) {
+        if (options != null) {
+            this.paranoidChecks = paranoidChecks;
+            LevelDBNative.leveldb_options_set_paranoid_checks(options, (byte) (paranoidChecks ? 1 : 0));
         }
     }
 
