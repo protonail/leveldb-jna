@@ -36,9 +36,9 @@ class LevelDBNative {
     public static native String leveldb_property_value(LevelDB levelDB, String propname);
 
     public static native void leveldb_approximate_sizes(LevelDB levelDB, int num_ranges,
-                                                        PointerByReference range_start_key, IntByReference range_start_key_len,
-                                                        PointerByReference range_limit_key, IntByReference range_limit_key_len,
-                                                        long sizes);
+                                                        Pointer range_start_key, long[] range_start_key_len,
+                                                        Pointer range_limit_key, long[] range_limit_key_len,
+                                                        Pointer sizes);
 
     public static native void leveldb_compact_range(LevelDB levelDB, int num_ranges,
                                                     byte[] start_key, long start_key_len,

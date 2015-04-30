@@ -281,6 +281,46 @@ public class LevelDBTest {
     }
 
     @Test
+    public void approximate_sizes_for_empty_ranges() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            options.setCreateIfMissing(true);
+
+            try (LevelDB levelDB = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                long[] sizes = levelDB.approximateSizes();
+
+                Assert.assertArrayEquals(new long[0], sizes);
+            }
+        }
+    }
+
+    @Test
+    public void approximate_sizes_for_ranges() {
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            options.setCreateIfMissing(true);
+
+            try (LevelDB levelDB = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                try(LevelDBWriteOptions writeOptions = new LevelDBWriteOptions()) {
+                    for (int i = 0; i < 20000; i++) {
+                        levelDB.put(String.format("k%020d", i).getBytes(), String.format("v%020d", i).getBytes(), writeOptions);
+                    }
+                }
+            }
+        }
+
+        try(LevelDBOptions options = new LevelDBOptions()) {
+            try (LevelDB levelDB = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                Range range1 = new Range("a".getBytes(), "k00000000000000010000".getBytes());
+                Range range2 = new Range("k00000000000000010000".getBytes(), "z".getBytes());
+
+                long[] sizes = levelDB.approximateSizes(range1, range2);
+
+                Assert.assertTrue(sizes[0] > 0);
+                Assert.assertTrue(sizes[1] > 0);
+            }
+        }
+    }
+
+    @Test
     public void repair_not_esists_database() {
         try(LevelDBOptions options = new LevelDBOptions()) {
             LevelDB.repair(testFolder.getRoot().getAbsolutePath(), options);

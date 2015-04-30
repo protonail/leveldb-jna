@@ -1,5 +1,8 @@
 package leveldb.jna;
 
+import com.sun.jna.Memory;
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 
@@ -53,6 +56,36 @@ public class LevelDB implements AutoCloseable {
 
     public String property(String property) {
         return LevelDBNative.leveldb_property_value(levelDB, property);
+    }
+
+    public long[] approximateSizes(Range ...ranges) {
+        if (ranges.length == 0)
+            return new long[0];
+
+        Memory startKeys = new Memory(ranges.length * Pointer.SIZE);
+        Memory limitKeys = new Memory(ranges.length * Pointer.SIZE);
+
+        long[] startLengths = new long[ranges.length];
+        long[] limitLengths = new long[ranges.length];
+        for (int i = 0; i < ranges.length; i++) {
+            int startKeyLength = ranges[i].getStartKey().length;
+            Memory startKeyMemory = new Memory(startKeyLength);
+            startKeyMemory.write(0, ranges[i].getStartKey(), 0, startKeyLength);
+
+            startKeys.setPointer(i * Pointer.SIZE, startKeyMemory);
+            startLengths[i] = startKeyLength;
+
+            int limitKeyLength = ranges[i].getLimitKey().length;
+            Memory limitKeyMemory = new Memory(limitKeyLength);
+            limitKeyMemory.write(0, ranges[i].getLimitKey(), 0, limitKeyLength);
+
+            limitKeys.setPointer(i * Pointer.SIZE, limitKeyMemory);
+            limitLengths[i] = limitKeyLength;
+        }
+        Pointer sizes = new Memory(ranges.length * Native.getNativeSize(Long.TYPE));
+        LevelDBNative.leveldb_approximate_sizes(levelDB, ranges.length, startKeys, startLengths, limitKeys, limitLengths, sizes);
+
+        return sizes.getLongArray(0, ranges.length);
     }
 
     public static void repair(String levelDBDirectory, LevelDBOptions options) {
