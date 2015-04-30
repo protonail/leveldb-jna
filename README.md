@@ -7,8 +7,8 @@ leveldb-jna is Java JNA adapter to LevelDB key-value database.
 ## Supported platforms
 
 * OS X
+* Linux x86/x64
 * Windows x86/x64 (in development)
-* Linux x86/x64 (in development)
 
 ## Usage
 
