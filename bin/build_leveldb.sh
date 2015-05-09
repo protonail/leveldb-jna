@@ -2,9 +2,9 @@
 
 set -e
 
-export ROOT_HOME=$(cd `dirname "{0}"` && pwd)
-export SNAPPY_HOME=$(cd `dirname "{0}"` && cd vendor/snappy && pwd)
-export LEVELDB_HOME=$(cd `dirname "{0}"` && cd vendor/leveldb && pwd)
+export ROOT_HOME=$(cd `dirname "$0"` && cd .. && pwd)
+export SNAPPY_HOME=$(cd $ROOT_HOME && cd vendor/snappy && pwd)
+export LEVELDB_HOME=$(cd $ROOT_HOME && cd vendor/leveldb && pwd)
 
 echo --------------------
 echo Build Snappy
