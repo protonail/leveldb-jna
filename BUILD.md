@@ -10,7 +10,7 @@
      pacman --needed -Sy bash pacman pacman-mirrors msys2-runtime
      ```
     
-1. Close MSYS2, run it again from Start menu and update the rest:
+1. (!!!) Close MSYS2, run it again from Start menu and update the rest:
 
      ```
      pacman -Su
