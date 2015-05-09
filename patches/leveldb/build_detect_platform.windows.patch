@@ -1,5 +1,5 @@
 diff --git a/build_detect_platform b/build_detect_platform
-index bb76c4f..ab9524a 100755
+index bb76c4f..fb42a0b 100755
 --- a/build_detect_platform
 +++ b/build_detect_platform
 @@ -147,6 +147,17 @@ case "$TARGET_OS" in
@@ -9,7 +9,7 @@ index bb76c4f..ab9524a 100755
 +    MINGW*)
 +        PLATFORM=OS_WINDOWS
 +        COMMON_FLAGS="$MEMCMP_FLAG -DOS_WINDOWS -D_REENTRANT -DLEVELDB_PLATFORM_WINDOWS -DWINVER=0x0500 -D__USE_MINGW_ANSI_STDIO=1"
-+        PLATFORM_LDFLAGS=
++        PLATFORM_LDFLAGS="-static -static-libgcc -static-libstdc++"
 +        PLATFORM_SHARED_CFLAGS=
 +        PLATFORM_SOURCES=util/env_win.cc
 +        PORT_FILE=port/port_win.cc
