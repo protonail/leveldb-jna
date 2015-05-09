@@ -6,13 +6,25 @@ export ROOT_HOME=$(cd `dirname "$0"` && cd .. && pwd)
 export SNAPPY_HOME=$(cd $ROOT_HOME && cd vendor/snappy && pwd)
 export LEVELDB_HOME=$(cd $ROOT_HOME && cd vendor/leveldb && pwd)
 
+if [[ "$1" == "clean" ]]; then
+  echo --------------------
+  echo Clean
+  echo --------------------
+
+  cd $SNAPPY_HOME
+  git clean -fdx
+  git reset --hard
+
+  cd $LEVELDB_HOME
+  git clean -fdx
+  git reset --hard
+fi
+
 echo --------------------
 echo Build Snappy
 echo --------------------
 
 cd $SNAPPY_HOME
-git clean -fdx
-git reset --hard
 [[ "$OSTYPE" == "darwin"* ]] && patch -N $SNAPPY_HOME/autogen.sh $ROOT_HOME/patches/snappy/autogen.sh.osx.patch
 patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/snappy/configure.ac.noarch.patch
 [[ "$OSTYPE" == "msys" ]] && patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/snappy/configure.ac.windows.patch
@@ -29,8 +41,6 @@ cd $LEVELDB_HOME
 export LIBRARY_PATH=$SNAPPY_HOME/lib
 export C_INCLUDE_PATH=$SNAPPY_HOME/include
 export CPLUS_INCLUDE_PATH=$SNAPPY_HOME/include
-git clean -fdx
-git reset --hard
 [[ "$OSTYPE" == "msys" ]] && patch -N $LEVELDB_HOME/util/build_detect_platform $ROOT_HOME/patches/leveldb/build_detect_platform.windows.patch
 [[ "$OSTYPE" == "msys" ]] && patch -N $LEVELDB_HOME/util/env_posix.cc $ROOT_HOME/patches/leveldb/env_posix.cc.windows.patch
 [[ "$OSTYPE" == "msys" ]] && cp -f $LEVELDB_HOME/patches/leveldb/env_win.cc $ROOT_HOME/util/env_win.cc
