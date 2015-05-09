@@ -861,7 +861,7 @@ Status Win32Env::LockFile( const std::string& fname, FileLock** lock )
     if(!_lock->isEnable()){
         delete _lock;
         *lock = NULL;
-        sRet = Status::IOError(path, "Could not lock file.");
+        sRet = Status::IOError(path, "already held by process");
     }
     else
         *lock = _lock;
