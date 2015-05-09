@@ -1,0 +1,17 @@
+diff --git a/configure.ac b/configure.ac
+index 3164b09..567301f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -13,7 +13,10 @@ AC_CONFIG_MACRO_DIR([m4])
+ # These are flags passed to automake (though they look like gcc flags!)
+ AM_INIT_AUTOMAKE([-Wall])
+
+-LT_INIT
++m4_pattern_allow([AM_PROG_AR])
++AM_PROG_AR
++
++LT_INIT([win32-dll])
+ AC_SUBST([LIBTOOL_DEPS])
+ AC_PROG_CXX
+ AC_LANG([C++])
+

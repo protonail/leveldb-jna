@@ -13,8 +13,10 @@ echo --------------------
 cd $SNAPPY_HOME
 git clean -fdx
 git reset --hard
-[[ "$OSTYPE" == "darwin"* ]] && patch -N $SNAPPY_HOME/autogen.sh $ROOT_HOME/patches/autogen.sh.osx.patch
-patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/configure.ac.noarch.patch
+[[ "$OSTYPE" == "darwin"* ]] && patch -N $SNAPPY_HOME/autogen.sh $ROOT_HOME/patches/snappy/autogen.sh.osx.patch
+patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/snappy/configure.ac.noarch.patch
+[[ "$OSTYPE" == "msys" ]] && patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/snappy/configure.ac.windows.patch
+[[ "$OSTYPE" == "msys" ]] && patch -N $SNAPPY_HOME/Makefile.am $ROOT_HOME/patches/snappy/Makefile.am.windows.patch
 ./autogen.sh
 ./configure --disable-shared --with-pic --prefix=$SNAPPY_HOME
 make install
@@ -29,6 +31,12 @@ export C_INCLUDE_PATH=$SNAPPY_HOME/include
 export CPLUS_INCLUDE_PATH=$SNAPPY_HOME/include
 git clean -fdx
 git reset --hard
+[[ "$OSTYPE" == "msys" ]] && patch -N $LEVELDB_HOME/util/build_detect_platform $ROOT_HOME/patches/leveldb/build_detect_platform.windows.patch
+[[ "$OSTYPE" == "msys" ]] && patch -N $LEVELDB_HOME/util/env_posix.cc $ROOT_HOME/patches/leveldb/env_posix.cc.windows.patch
+[[ "$OSTYPE" == "msys" ]] && cp -f $LEVELDB_HOME/patches/leveldb/env_win.cc $ROOT_HOME/util/env_win.cc
+[[ "$OSTYPE" == "msys" ]] && patch -N $LEVELDB_HOME/port/port.h $ROOT_HOME/patches/leveldb/port.h.windows.patch
+[[ "$OSTYPE" == "msys" ]] && cp -f $ROOT_HOME/patches/leveldb/port_win.h $LEVELDB_HOME/port/port_win.h
+[[ "$OSTYPE" == "msys" ]] && cp -f $ROOT_HOME/patches/leveldb/port_win.cc $LEVELDB_HOME/port/port_win.cc
 make
 
 echo --------------------
@@ -40,6 +48,7 @@ cd $LEVELDB_HOME
 if [[ "$OSTYPE" == "darwin"* ]]; then
   LEVELDB_FILE=libleveldb.dylib
   LEVELDB_ARCH=darwin
+  OUTPUT_LEVELDB_FILE=
 elif [[ "$OSTYPE" == "linux"* ]]; then
   LEVELDB_FILE=libleveldb.so
   if [[ $(uname -m) == "x86_64" ]]; then
@@ -47,7 +56,16 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
   else
     LEVELDB_ARCH=linux-x86
   fi
+  OUTPUT_LEVELDB_FILE=
+elif [[ "$OSTYPE" == "msys" ]]; then
+  LEVELDB_FILE=libleveldb.dll
+  if [[ "$MSYSTEM" == "MINGW64" ]]; then
+    LEVELDB_ARCH=win32-x86-64
+  else
+    LEVELDB_ARCH=win32-x86
+  fi
+  OUTPUT_LEVELDB_FILE=leveldb.dll
 fi
 
 mkdir -p $ROOT_HOME/leveldb-jna-native/src/main/resources/$LEVELDB_ARCH/
-cp $LEVELDB_FILE $ROOT_HOME/leveldb-jna-native/src/main/resources/$LEVELDB_ARCH/
+cp $LEVELDB_FILE $ROOT_HOME/leveldb-jna-native/src/main/resources/$LEVELDB_ARCH/$OUTPUT_LEVELDB_FILE
