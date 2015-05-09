@@ -25,7 +25,7 @@
                 </os>
             </activation>
             <properties>
-                <classifier>osx</classifier>
+                <platform.classifier>osx</platform.classifier>
             </properties>
         </profile>
 
@@ -40,7 +40,7 @@
                 </os>
             </activation>
             <properties>
-                <classifier>windows-x86_64</classifier>
+                <platform.classifier>windows-x86_64</platform.classifier>
             </properties>
         </profile>
         <profile>
@@ -52,7 +52,7 @@
                 </os>
             </activation>
             <properties>
-                <classifier>windows-x86_64</classifier>
+                <platform.classifier>windows-x86_64</platform.classifier>
             </properties>
         </profile>
         <profile>
@@ -64,7 +64,7 @@
                 </os>
             </activation>
             <properties>
-                <classifier>windows-x86</classifier>
+                <platform.classifier>windows-x86</platform.classifier>
             </properties>
         </profile>
 
@@ -80,7 +80,7 @@
                 </os>
             </activation>
             <properties>
-                <classifier>linux-x86_64</classifier>
+                <platform.classifier>linux-x86_64</platform.classifier>
             </properties>
         </profile>
         <profile>
@@ -93,7 +93,7 @@
                 </os>
             </activation>
             <properties>
-                <classifier>linux-x86_64</classifier>
+                <platform.classifier>linux-x86_64</platform.classifier>
             </properties>
         </profile>
         <profile>
@@ -106,7 +106,7 @@
                 </os>
             </activation>
             <properties>
-                <classifier>linux-x86</classifier>
+                <platform.classifier>linux-x86</platform.classifier>
             </properties>
         </profile>
 
@@ -123,7 +123,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <classifier>${classifier}</classifier>
+                    <classifier>${platform.classifier}</classifier>
                 </configuration>
             </plugin>
         </plugins>
