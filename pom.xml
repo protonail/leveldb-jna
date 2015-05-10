@@ -141,6 +141,19 @@
         <platform.classifier>linux-x86</platform.classifier>
       </properties>
     </profile>
+    <profile>
+      <id>linux-i386</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <name>Linux</name>
+          <arch>i386</arch>
+        </os>
+      </activation>
+      <properties>
+        <platform.classifier>linux-x86</platform.classifier>
+      </properties>
+    </profile>
 
   </profiles>
 </project>
