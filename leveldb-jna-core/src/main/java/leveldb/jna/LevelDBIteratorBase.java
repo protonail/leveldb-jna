@@ -1,5 +1,6 @@
 package leveldb.jna;
 
+import com.sun.jna.Native;
 import com.sun.jna.ptr.PointerByReference;
 
 import java.util.Iterator;
@@ -41,7 +42,13 @@ public abstract class LevelDBIteratorBase<TElement> implements AutoCloseable, It
     }
 
     public void seekToKey(byte[] key) {
-        LevelDBNative.leveldb_iter_seek(iterator, key, key.length);
+        if (Native.LONG_SIZE == 8) {
+            long keyLength = key != null ? key.length : 0;
+            LevelDBNative.leveldb_iter_seek(iterator, key, keyLength);
+        } else {
+            int keyLength = key != null ? key.length : 0;
+            LevelDBNative.leveldb_iter_seek(iterator, key, keyLength);
+        }
         checkError();
     }
 }

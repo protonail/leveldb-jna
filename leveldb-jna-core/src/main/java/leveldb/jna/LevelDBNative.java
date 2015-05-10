@@ -19,14 +19,25 @@ class LevelDBNative {
                                                         byte[] key, long keylen,
                                                         IntByReference vallen,
                                                         PointerByReference errptr);
+    public static native PointerByReference leveldb_get(LevelDB levelDB, ReadOptions options,
+                                                        byte[] key, int keylen,
+                                                        IntByReference vallen,
+                                                        PointerByReference errptr);
 
     public static native void leveldb_put(LevelDB levelDB, WriteOptions options,
                                           byte[] key, long keylen,
                                           byte[] val, long vallen,
                                           PointerByReference errptr);
+    public static native void leveldb_put(LevelDB levelDB, WriteOptions options,
+                                          byte[] key, int keylen,
+                                          byte[] val, int vallen,
+                                          PointerByReference errptr);
 
     public static native void leveldb_delete(LevelDB levelDB, WriteOptions options,
                                              byte[] key, long keylen,
+                                             PointerByReference errptr);
+    public static native void leveldb_delete(LevelDB levelDB, WriteOptions options,
+                                             byte[] key, int keylen,
                                              PointerByReference errptr);
 
     public static native void leveldb_write(LevelDB levelDB, WriteOptions options,
@@ -39,10 +50,17 @@ class LevelDBNative {
                                                         Pointer range_start_key, long[] range_start_key_len,
                                                         Pointer range_limit_key, long[] range_limit_key_len,
                                                         Pointer sizes);
+    public static native void leveldb_approximate_sizes(LevelDB levelDB, int num_ranges,
+                                                        Pointer range_start_key, int[] range_start_key_len,
+                                                        Pointer range_limit_key, int[] range_limit_key_len,
+                                                        Pointer sizes);
 
     public static native void leveldb_compact_range(LevelDB levelDB,
                                                     byte[] start_key, long start_key_len,
                                                     byte[] limit_key, long limit_key_len);
+    public static native void leveldb_compact_range(LevelDB levelDB,
+                                                    byte[] start_key, int start_key_len,
+                                                    byte[] limit_key, int limit_key_len);
 
     public static native void leveldb_destroy_db(Options options, String name, PointerByReference errptr);
 
@@ -73,12 +91,14 @@ class LevelDBNative {
     public static native void leveldb_options_set_info_log(Options options, LevelDBNative.Logger logger);
 
     public static native void leveldb_options_set_write_buffer_size(Options options, long writeBufferSize);
+    public static native void leveldb_options_set_write_buffer_size(Options options, int writeBufferSize);
 
     public static native void leveldb_options_set_max_open_files(Options options, int maxOpenFiles);
 
     public static native void leveldb_options_set_cache(Options options, LevelDBNative.Cache cache);
 
     public static native void leveldb_options_set_block_size(Options options, long blockSize);
+    public static native void leveldb_options_set_block_size(Options options, int blockSize);
 
     public static native void leveldb_options_set_block_restart_interval(Options options, int blockRestartInterval);
 
@@ -107,6 +127,7 @@ class LevelDBNative {
     // Cache
 
     public static native Cache leveldb_cache_create_lru(long capacity);
+    public static native Cache leveldb_cache_create_lru(int capacity);
 
     public static native void leveldb_cache_destroy(Cache cache);
 
@@ -118,6 +139,7 @@ class LevelDBNative {
 
     public static native void leveldb_comparator_destroy(Comparator comparator);
 
+    //TODO: required `int` interface for fix problem with `long` on 32-bit Windows systems
     public interface CompareFunc extends Callback {
         int invoke(Pointer pointer, byte[] a, long alen, byte[] b, long blen);
     }
@@ -144,6 +166,7 @@ class LevelDBNative {
         void invoke(Pointer pointer, PointerByReference key_array, IntByReference key_length_array, int num_keys, IntByReference filter_length);
     }
 
+    //TODO: required `int` interface for fix problem with `long` on 32-bit Windows systems
     public interface KeyMayMatchFunc extends Callback {
         void invoke(Pointer pointer, byte[] key, long length, byte[] filter, long filter_length);
     }
@@ -165,6 +188,7 @@ class LevelDBNative {
     public static native void leveldb_iter_seek_to_last(Iterator iterator);
 
     public static native void leveldb_iter_seek(Iterator iterator, byte[] k, long klen);
+    public static native void leveldb_iter_seek(Iterator iterator, byte[] k, int klen);
 
     public static native void leveldb_iter_next(Iterator iterator);
 
@@ -193,18 +217,25 @@ class LevelDBNative {
     public static native void leveldb_writebatch_put(WriteBatch writeBatch,
                                                      byte[] key, long klen,
                                                      byte[] val, long vlen);
+    public static native void leveldb_writebatch_put(WriteBatch writeBatch,
+                                                     byte[] key, int klen,
+                                                     byte[] val, int vlen);
 
     public static native void leveldb_writebatch_delete(WriteBatch writeBatch,
                                                         byte[] key, long klen);
+    public static native void leveldb_writebatch_delete(WriteBatch writeBatch,
+                                                        byte[] key, int klen);
 
     public static native void leveldb_writebatch_iterate(WriteBatch writeBatch,
                                                          Pointer state,
                                                          PutFunc putFunc, DeleteFunc deleteFunc);
 
+    //TODO: required `int` interface for fix problem with `long` on 32-bit Windows systems
     public interface PutFunc extends Callback {
         int invoke(Pointer pointer, byte[] k, long klen, byte[] value, long vlen);
     }
 
+    //TODO: required `int` interface for fix problem with `long` on 32-bit Windows systems
     public interface DeleteFunc extends Callback {
         int invoke(Pointer pointer, byte[] k, long klen);
     }

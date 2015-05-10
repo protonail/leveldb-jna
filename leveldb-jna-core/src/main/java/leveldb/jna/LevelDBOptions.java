@@ -1,5 +1,7 @@
 package leveldb.jna;
 
+import com.sun.jna.Native;
+
 public class LevelDBOptions implements AutoCloseable {
     protected LevelDBNative.Options options;
 
@@ -82,7 +84,11 @@ public class LevelDBOptions implements AutoCloseable {
     public void setWriteBufferSize(long writeBufferSize) {
         if (options != null) {
             this.writeBufferSize = writeBufferSize;
-            LevelDBNative.leveldb_options_set_write_buffer_size(options, writeBufferSize);
+            if (Native.LONG_SIZE == 8) {
+                LevelDBNative.leveldb_options_set_write_buffer_size(options, writeBufferSize);
+            } else {
+                LevelDBNative.leveldb_options_set_write_buffer_size(options, (int) writeBufferSize);
+            }
         }
     }
 
@@ -104,7 +110,11 @@ public class LevelDBOptions implements AutoCloseable {
     public void setBlockSize(long blockSize) {
         if (options != null) {
             this.blockSize = blockSize;
-            LevelDBNative.leveldb_options_set_block_size(options, blockSize);
+            if (Native.LONG_SIZE == 8) {
+                LevelDBNative.leveldb_options_set_block_size(options, blockSize);
+            } else {
+                LevelDBNative.leveldb_options_set_block_size(options, (int) blockSize);
+            }
         }
     }
 

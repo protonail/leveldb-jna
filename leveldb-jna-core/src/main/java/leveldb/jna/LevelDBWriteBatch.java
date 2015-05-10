@@ -1,5 +1,7 @@
 package leveldb.jna;
 
+import com.sun.jna.Native;
+
 public class LevelDBWriteBatch implements AutoCloseable {
     protected LevelDBNative.WriteBatch writeBatch;
 
@@ -20,10 +22,24 @@ public class LevelDBWriteBatch implements AutoCloseable {
     }
 
     public void put(byte[] key, byte[] value) {
-        LevelDBNative.leveldb_writebatch_put(writeBatch, key, key.length, value, value.length);
+        if (Native.LONG_SIZE == 8) {
+            long keyLength = key != null ? key.length : 0;
+            long valueLength = value != null ? value.length : 0;
+            LevelDBNative.leveldb_writebatch_put(writeBatch, key, keyLength, value, valueLength);
+        } else {
+            int keyLength = key != null ? key.length : 0;
+            int valueLength = value != null ? value.length : 0;
+            LevelDBNative.leveldb_writebatch_put(writeBatch, key, keyLength, value, valueLength);
+        }
     }
 
     public void delete(byte[] key) {
-        LevelDBNative.leveldb_writebatch_delete(writeBatch, key, key.length);
+        if (Native.LONG_SIZE == 8) {
+            long keyLength = key != null ? key.length : 0;
+            LevelDBNative.leveldb_writebatch_delete(writeBatch, key, keyLength);
+        } else {
+            int keyLength = key != null ? key.length : 0;
+            LevelDBNative.leveldb_writebatch_delete(writeBatch, key, keyLength);
+        }
     }
 }

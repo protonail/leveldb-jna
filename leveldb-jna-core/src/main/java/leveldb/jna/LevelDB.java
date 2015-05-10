@@ -25,19 +25,31 @@ public class LevelDB implements AutoCloseable {
     public byte[] get(byte[] key, LevelDBReadOptions readOptions) {
         IntByReference resultLength = new IntByReference();
 
-        long keyLength = key != null ? key.length : 0;
         PointerByReference error = new PointerByReference();
-        PointerByReference result = LevelDBNative.leveldb_get(levelDB, readOptions.readOptions, key, keyLength, resultLength, error);
+        PointerByReference result;
+        if (Native.LONG_SIZE == 8) {
+            long keyLength = key != null ? key.length : 0;
+            result = LevelDBNative.leveldb_get(levelDB, readOptions.readOptions, key, keyLength, resultLength, error);
+        } else {
+            int keyLength = key != null ? key.length : 0;
+            result = LevelDBNative.leveldb_get(levelDB, readOptions.readOptions, key, keyLength, resultLength, error);
+        }
         LevelDBNative.checkError(error);
 
         return result != null ? result.getPointer().getByteArray(0, resultLength.getValue()) : null;
     }
 
     public void put(byte[] key, byte[] value, LevelDBWriteOptions writeOptions) {
-        long keyLength = key != null ? key.length : 0;
-        long valueLength = value != null ? value.length : 0;
         PointerByReference error = new PointerByReference();
-        LevelDBNative.leveldb_put(levelDB, writeOptions.writeOptions, key, keyLength, value, valueLength, error);
+        if (Native.LONG_SIZE == 8) {
+            long keyLength = key != null ? key.length : 0;
+            long valueLength = value != null ? value.length : 0;
+            LevelDBNative.leveldb_put(levelDB, writeOptions.writeOptions, key, keyLength, value, valueLength, error);
+        } else {
+            int keyLength = key != null ? key.length : 0;
+            int valueLength = value != null ? value.length : 0;
+            LevelDBNative.leveldb_put(levelDB, writeOptions.writeOptions, key, keyLength, value, valueLength, error);
+        }
         LevelDBNative.checkError(error);
     }
 
@@ -48,9 +60,14 @@ public class LevelDB implements AutoCloseable {
     }
 
     public void delete(byte[] key, LevelDBWriteOptions writeOptions) {
-        long keyLength = key != null ? key.length : 0;
         PointerByReference error = new PointerByReference();
-        LevelDBNative.leveldb_delete(levelDB, writeOptions.writeOptions, key, keyLength, error);
+        if (Native.LONG_SIZE == 8) {
+            long keyLength = key != null ? key.length : 0;
+            LevelDBNative.leveldb_delete(levelDB, writeOptions.writeOptions, key, keyLength, error);
+        } else {
+            int keyLength = key != null ? key.length : 0;
+            LevelDBNative.leveldb_delete(levelDB, writeOptions.writeOptions, key, keyLength, error);
+        }
         LevelDBNative.checkError(error);
     }
 
@@ -65,33 +82,56 @@ public class LevelDB implements AutoCloseable {
         Memory startKeys = new Memory(ranges.length * Pointer.SIZE);
         Memory limitKeys = new Memory(ranges.length * Pointer.SIZE);
 
-        long[] startLengths = new long[ranges.length];
-        long[] limitLengths = new long[ranges.length];
         for (int i = 0; i < ranges.length; i++) {
             int startKeyLength = ranges[i].getStartKey().length;
             Memory startKeyMemory = new Memory(startKeyLength);
             startKeyMemory.write(0, ranges[i].getStartKey(), 0, startKeyLength);
 
             startKeys.setPointer(i * Pointer.SIZE, startKeyMemory);
-            startLengths[i] = startKeyLength;
 
             int limitKeyLength = ranges[i].getLimitKey().length;
             Memory limitKeyMemory = new Memory(limitKeyLength);
             limitKeyMemory.write(0, ranges[i].getLimitKey(), 0, limitKeyLength);
 
             limitKeys.setPointer(i * Pointer.SIZE, limitKeyMemory);
-            limitLengths[i] = limitKeyLength;
         }
+
         Pointer sizes = new Memory(ranges.length * Native.getNativeSize(Long.TYPE));
-        LevelDBNative.leveldb_approximate_sizes(levelDB, ranges.length, startKeys, startLengths, limitKeys, limitLengths, sizes);
+        if (Native.LONG_SIZE == 8) {
+            long[] startLengths = new long[ranges.length];
+            long[] limitLengths = new long[ranges.length];
+
+            for (int i = 0; i < ranges.length; i++) {
+                startLengths[i] = ranges[i].getStartKey().length;
+                limitLengths[i] = ranges[i].getLimitKey().length;
+            }
+
+            LevelDBNative.leveldb_approximate_sizes(levelDB, ranges.length, startKeys, startLengths, limitKeys, limitLengths, sizes);
+        } else {
+            int[] startLengths = new int[ranges.length];
+            int[] limitLengths = new int[ranges.length];
+
+            for (int i = 0; i < ranges.length; i++) {
+                startLengths[i] = ranges[i].getStartKey().length;
+                limitLengths[i] = ranges[i].getLimitKey().length;
+            }
+
+            LevelDBNative.leveldb_approximate_sizes(levelDB, ranges.length, startKeys, startLengths, limitKeys, limitLengths, sizes);
+        }
 
         return sizes.getLongArray(0, ranges.length);
     }
 
     public void compactRange(byte[] startKey, byte[] limitKey) {
-        long startKeyLength = startKey != null ? startKey.length : 0;
-        long limitKeyLength = limitKey != null ? limitKey.length : 0;
-        LevelDBNative.leveldb_compact_range(levelDB, startKey, startKeyLength, limitKey, limitKeyLength);
+        if (Native.LONG_SIZE == 8) {
+            long startKeyLength = startKey != null ? startKey.length : 0;
+            long limitKeyLength = limitKey != null ? limitKey.length : 0;
+            LevelDBNative.leveldb_compact_range(levelDB, startKey, startKeyLength, limitKey, limitKeyLength);
+        } else {
+            int startKeyLength = startKey != null ? startKey.length : 0;
+            int limitKeyLength = limitKey != null ? limitKey.length : 0;
+            LevelDBNative.leveldb_compact_range(levelDB, startKey, startKeyLength, limitKey, limitKeyLength);
+        }
     }
 
     public static void repair(String levelDBDirectory, LevelDBOptions options) {
