@@ -38,11 +38,13 @@ public class LevelDBTest {
             options.setCreateIfMissing(true);
 
             try(LevelDB levelDB1 = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
+                boolean hasException = false;
                 try(LevelDB levelDB2 = new LevelDB(testFolder.getRoot().getAbsolutePath(), options)) {
                     Assert.fail("Expected LevelDBException about already used database");
                 } catch (LevelDBException e) {
-                    Assert.assertTrue(e.getMessage().contains("already held by process"));
+                    hasException = true;
                 }
+                Assert.assertTrue(hasException);
             }
         }
     }
