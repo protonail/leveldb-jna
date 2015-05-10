@@ -1,5 +1,11 @@
 # Testing
 
+## How to run test?
+
+```
+mvn test
+```
+
 ## How to run specific test only?
 
 ```
