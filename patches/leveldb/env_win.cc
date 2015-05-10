@@ -345,7 +345,7 @@ Status Win32SequentialFile::Read( size_t n, Slice* result, char* scratch )
     if(_hFile && ReadFile(_hFile,scratch,n,&hasRead,NULL) ){
         *result = Slice(scratch,hasRead);
     } else {
-        sRet = Status::IOError(_filename, Win32::GetLastErrSz() );
+        sRet = Status::IOError("Win32SequentialFile::Read: " + _filename, Win32::GetLastErrSz() );
     }
     return sRet;
 }
@@ -356,7 +356,7 @@ Status Win32SequentialFile::Skip( uint64_t n )
     LARGE_INTEGER Move,NowPointer;
     Move.QuadPart = n;
     if(!SetFilePointerEx(_hFile,Move,&NowPointer,FILE_CURRENT)){
-        sRet = Status::IOError(_filename,Win32::GetLastErrSz());
+        sRet = Status::IOError("Win32SequentialFile::Skip: " + _filename,Win32::GetLastErrSz());
     }
     return sRet;
 }
@@ -410,7 +410,7 @@ Status Win32RandomAccessFile::Read(uint64_t offset,size_t n,Slice* result,char* 
     ol.OffsetHigh = (DWORD)(offset >> 32);
     DWORD hasRead = 0;
     if(!ReadFile(_hFile,scratch,n,&hasRead,&ol))
-        sRet = Status::IOError(_filename,Win32::GetLastErrSz());
+        sRet = Status::IOError("Win32RandomAccessFile::Read: " + _filename,Win32::GetLastErrSz());
     else
         *result = Slice(scratch,hasRead);
     return sRet;
