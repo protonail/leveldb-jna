@@ -84,7 +84,7 @@ public class LevelDBOptions implements AutoCloseable {
     public void setWriteBufferSize(long writeBufferSize) {
         if (options != null) {
             this.writeBufferSize = writeBufferSize;
-            if (Native.LONG_SIZE == 8) {
+            if (Native.POINTER_SIZE == 8) {
                 LevelDBNative.leveldb_options_set_write_buffer_size(options, writeBufferSize);
             } else {
                 LevelDBNative.leveldb_options_set_write_buffer_size(options, (int) writeBufferSize);
@@ -110,7 +110,7 @@ public class LevelDBOptions implements AutoCloseable {
     public void setBlockSize(long blockSize) {
         if (options != null) {
             this.blockSize = blockSize;
-            if (Native.LONG_SIZE == 8) {
+            if (Native.POINTER_SIZE == 8) {
                 LevelDBNative.leveldb_options_set_block_size(options, blockSize);
             } else {
                 LevelDBNative.leveldb_options_set_block_size(options, (int) blockSize);

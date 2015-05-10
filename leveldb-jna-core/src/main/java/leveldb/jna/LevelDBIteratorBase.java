@@ -42,7 +42,7 @@ public abstract class LevelDBIteratorBase<TElement> implements AutoCloseable, It
     }
 
     public void seekToKey(byte[] key) {
-        if (Native.LONG_SIZE == 8) {
+        if (Native.POINTER_SIZE == 8) {
             long keyLength = key != null ? key.length : 0;
             LevelDBNative.leveldb_iter_seek(iterator, key, keyLength);
         } else {

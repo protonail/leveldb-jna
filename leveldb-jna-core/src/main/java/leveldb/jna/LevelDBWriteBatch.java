@@ -22,7 +22,7 @@ public class LevelDBWriteBatch implements AutoCloseable {
     }
 
     public void put(byte[] key, byte[] value) {
-        if (Native.LONG_SIZE == 8) {
+        if (Native.POINTER_SIZE == 8) {
             long keyLength = key != null ? key.length : 0;
             long valueLength = value != null ? value.length : 0;
             LevelDBNative.leveldb_writebatch_put(writeBatch, key, keyLength, value, valueLength);
@@ -34,7 +34,7 @@ public class LevelDBWriteBatch implements AutoCloseable {
     }
 
     public void delete(byte[] key) {
-        if (Native.LONG_SIZE == 8) {
+        if (Native.POINTER_SIZE == 8) {
             long keyLength = key != null ? key.length : 0;
             LevelDBNative.leveldb_writebatch_delete(writeBatch, key, keyLength);
         } else {

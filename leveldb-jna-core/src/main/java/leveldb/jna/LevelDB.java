@@ -2,6 +2,7 @@ package leveldb.jna;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
@@ -27,7 +28,7 @@ public class LevelDB implements AutoCloseable {
 
         PointerByReference error = new PointerByReference();
         PointerByReference result;
-        if (Native.LONG_SIZE == 8) {
+        if (Native.POINTER_SIZE == 8) {
             long keyLength = key != null ? key.length : 0;
             result = LevelDBNative.leveldb_get(levelDB, readOptions.readOptions, key, keyLength, resultLength, error);
         } else {
@@ -41,7 +42,7 @@ public class LevelDB implements AutoCloseable {
 
     public void put(byte[] key, byte[] value, LevelDBWriteOptions writeOptions) {
         PointerByReference error = new PointerByReference();
-        if (Native.LONG_SIZE == 8) {
+        if (Native.POINTER_SIZE == 8) {
             long keyLength = key != null ? key.length : 0;
             long valueLength = value != null ? value.length : 0;
             LevelDBNative.leveldb_put(levelDB, writeOptions.writeOptions, key, keyLength, value, valueLength, error);
@@ -61,7 +62,7 @@ public class LevelDB implements AutoCloseable {
 
     public void delete(byte[] key, LevelDBWriteOptions writeOptions) {
         PointerByReference error = new PointerByReference();
-        if (Native.LONG_SIZE == 8) {
+        if (Native.POINTER_SIZE == 8) {
             long keyLength = key != null ? key.length : 0;
             LevelDBNative.leveldb_delete(levelDB, writeOptions.writeOptions, key, keyLength, error);
         } else {
@@ -97,7 +98,7 @@ public class LevelDB implements AutoCloseable {
         }
 
         Pointer sizes = new Memory(ranges.length * Native.getNativeSize(Long.TYPE));
-        if (Native.LONG_SIZE == 8) {
+        if (Native.POINTER_SIZE == 8) {
             long[] startLengths = new long[ranges.length];
             long[] limitLengths = new long[ranges.length];
 
@@ -123,7 +124,7 @@ public class LevelDB implements AutoCloseable {
     }
 
     public void compactRange(byte[] startKey, byte[] limitKey) {
-        if (Native.LONG_SIZE == 8) {
+        if (Native.POINTER_SIZE == 8) {
             long startKeyLength = startKey != null ? startKey.length : 0;
             long limitKeyLength = limitKey != null ? limitKey.length : 0;
             LevelDBNative.leveldb_compact_range(levelDB, startKey, startKeyLength, limitKey, limitKeyLength);
