@@ -1,4 +1,4 @@
-package leveldb.jna;
+package com.protonail.leveldb.jna;
 
 public class Range {
     private byte[] startKey;

@@ -1,4 +1,4 @@
-package leveldb.jna;
+package com.protonail.leveldb.jna;
 
 import org.junit.Assert;
 import org.junit.Test;

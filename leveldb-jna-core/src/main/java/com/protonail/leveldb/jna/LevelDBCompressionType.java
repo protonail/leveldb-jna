@@ -1,4 +1,4 @@
-package leveldb.jna;
+package com.protonail.leveldb.jna;
 
 public enum LevelDBCompressionType {
     NoCompression(0),

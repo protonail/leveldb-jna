@@ -1,4 +1,4 @@
-package leveldb.jna;
+package com.protonail.leveldb.jna;
 
 public class LevelDBWriteOptions implements AutoCloseable {
     protected LevelDBNative.WriteOptions writeOptions;
