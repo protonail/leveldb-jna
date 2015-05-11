@@ -47,7 +47,7 @@ export CPLUS_INCLUDE_PATH=$SNAPPY_HOME/include
 [[ "$OSTYPE" == "msys" ]] && patch -N $LEVELDB_HOME/port/port.h $ROOT_HOME/patches/leveldb/port.h.windows.patch
 [[ "$OSTYPE" == "msys" ]] && cp -f $ROOT_HOME/patches/leveldb/port_win.h $LEVELDB_HOME/port/port_win.h
 [[ "$OSTYPE" == "msys" ]] && cp -f $ROOT_HOME/patches/leveldb/port_win.cc $LEVELDB_HOME/port/port_win.cc
-make
+make clean all
 
 echo --------------------
 echo Copy LevelDB library
