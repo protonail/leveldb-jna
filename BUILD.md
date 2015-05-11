@@ -75,7 +75,7 @@ You should repeat these steps for each platform.
 1. Open `leveldb-jna` root directory and execute build script:
 
      ```
-     bin/build_leveldb.sh
+     bin/build_leveldb.sh clean
      ```
      
      It should build Snappy and LevelDB and copy correspond native library file to `leveldb-jna-native/src/main/resources/<JNA platform identificator>/<library name>.{so,dylib,dll}`.
