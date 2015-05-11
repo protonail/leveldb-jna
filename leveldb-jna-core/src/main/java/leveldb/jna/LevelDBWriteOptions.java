@@ -11,10 +11,10 @@ public class LevelDBWriteOptions implements AutoCloseable {
     }
 
     public void close() {
-        if (writeOptions != null) {
-            LevelDBNative.leveldb_writeoptions_destroy(writeOptions);
-            writeOptions = null;
-        }
+        checkWriteOptionsOpen();
+
+        LevelDBNative.leveldb_writeoptions_destroy(writeOptions);
+        writeOptions = null;
     }
 
     public boolean isSync() {
@@ -22,9 +22,15 @@ public class LevelDBWriteOptions implements AutoCloseable {
     }
 
     public void setSync(boolean sync) {
-        if (writeOptions != null) {
-            this.sync = sync;
-            LevelDBNative.leveldb_writeoptions_set_sync(writeOptions, (byte) (sync ? 1 : 0));
+        checkWriteOptionsOpen();
+
+        this.sync = sync;
+        LevelDBNative.leveldb_writeoptions_set_sync(writeOptions, (byte) (sync ? 1 : 0));
+    }
+
+    protected void checkWriteOptionsOpen() {
+        if (writeOptions == null) {
+            throw new LevelDBException("LevelDB write options was closed.");
         }
     }
 }

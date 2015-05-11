@@ -10,7 +10,7 @@ public class LevelDBWriteOptionsTest {
         writeOptions.close();
     }
 
-    @Test
+    @Test(expected = LevelDBException.class)
     public void create_and_close_twice() {
         LevelDBWriteOptions writeOptions = new LevelDBWriteOptions();
         writeOptions.close();

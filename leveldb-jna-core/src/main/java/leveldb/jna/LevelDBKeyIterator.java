@@ -10,6 +10,9 @@ public class LevelDBKeyIterator extends LevelDBIteratorBase<byte[]> {
     }
 
     public byte[] next() {
+        levelDB.checkDatabaseOpen();
+        checkIteratorOpen();
+
         IntByReference resultLength = new IntByReference();
         PointerByReference pointerToKey = LevelDBNative.leveldb_iter_key(iterator, resultLength);
         byte[] key = pointerToKey.getPointer().getByteArray(0, resultLength.getValue());

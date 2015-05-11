@@ -10,7 +10,7 @@ public class LevelDBReadOptionsTest {
         readOptions.close();
     }
 
-    @Test
+    @Test(expected = LevelDBException.class)
     public void create_and_close_twice() {
         LevelDBReadOptions readOptions = new LevelDBReadOptions();
         readOptions.close();

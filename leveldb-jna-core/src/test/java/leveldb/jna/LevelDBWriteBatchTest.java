@@ -9,7 +9,7 @@ public class LevelDBWriteBatchTest {
         writeBatch.close();
     }
 
-    @Test
+    @Test(expected = LevelDBException.class)
     public void create_and_close_twice() {
         LevelDBWriteBatch writeBatch = new LevelDBWriteBatch();
         writeBatch.close();

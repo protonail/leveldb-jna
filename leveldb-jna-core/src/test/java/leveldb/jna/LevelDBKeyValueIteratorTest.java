@@ -23,7 +23,7 @@ public class LevelDBKeyValueIteratorTest {
         }
     }
 
-    @Test
+    @Test(expected = LevelDBException.class)
     public void open_and_close_twice() {
         try(LevelDBOptions options = new LevelDBOptions()) {
             options.setCreateIfMissing(true);

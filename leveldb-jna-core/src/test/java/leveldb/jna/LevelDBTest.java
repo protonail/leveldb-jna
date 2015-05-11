@@ -352,7 +352,7 @@ public class LevelDBTest {
     }
 
     @Test
-    public void repair_database() throws Exception {
+    public void repair_database() {
         try(LevelDBOptions options = new LevelDBOptions()) {
             options.setCreateIfMissing(true);
 
@@ -376,7 +376,7 @@ public class LevelDBTest {
     }
 
     @Test
-    public void destroy_database() throws Exception {
+    public void destroy_database() {
         try(LevelDBOptions options = new LevelDBOptions()) {
             options.setCreateIfMissing(true);
 

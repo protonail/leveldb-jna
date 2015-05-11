@@ -10,6 +10,9 @@ public class LevelDBKeyValueIterator extends LevelDBIteratorBase<KeyValuePair> {
     }
 
     public KeyValuePair next() {
+        levelDB.checkDatabaseOpen();
+        checkIteratorOpen();
+
         IntByReference resultLength = new IntByReference();
         PointerByReference result;
 
