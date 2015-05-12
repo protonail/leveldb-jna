@@ -3,7 +3,6 @@ package com.protonail.leveldb.jna;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 
 public class LevelDB implements AutoCloseable {
@@ -28,20 +27,26 @@ public class LevelDB implements AutoCloseable {
         checkDatabaseOpen();
         readOptions.checkReadOptionsOpen();
 
-        IntByReference resultLength = new IntByReference();
+        PointerByReference resultLengthPointer = new PointerByReference();
 
-        PointerByReference error = new PointerByReference();
         PointerByReference result;
+        long resultLength;
+        PointerByReference error = new PointerByReference();
         if (Native.POINTER_SIZE == 8) {
             long keyLength = key != null ? key.length : 0;
-            result = LevelDBNative.leveldb_get(levelDB, readOptions.readOptions, key, keyLength, resultLength, error);
+            result = LevelDBNative.leveldb_get(levelDB, readOptions.readOptions, key, keyLength, resultLengthPointer, error);
+            LevelDBNative.checkError(error);
+
+            resultLength = resultLengthPointer.getPointer().getLong(0);
         } else {
             int keyLength = key != null ? key.length : 0;
-            result = LevelDBNative.leveldb_get(levelDB, readOptions.readOptions, key, keyLength, resultLength, error);
-        }
-        LevelDBNative.checkError(error);
+            result = LevelDBNative.leveldb_get(levelDB, readOptions.readOptions, key, keyLength, resultLengthPointer, error);
+            LevelDBNative.checkError(error);
 
-        return result != null ? result.getPointer().getByteArray(0, resultLength.getValue()) : null;
+            resultLength = resultLengthPointer.getPointer().getInt(0);
+        }
+
+        return result != null ? result.getPointer().getByteArray(0, (int) resultLength) : null;
     }
 
     public void put(byte[] key, byte[] value, LevelDBWriteOptions writeOptions) {

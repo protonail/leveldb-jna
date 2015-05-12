@@ -1,7 +1,6 @@
 package com.protonail.leveldb.jna;
 
 import com.sun.jna.*;
-import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 
 class LevelDBNative {
@@ -17,11 +16,11 @@ class LevelDBNative {
 
     public static native PointerByReference leveldb_get(LevelDB levelDB, ReadOptions options,
                                                         byte[] key, long keylen,
-                                                        IntByReference vallen,
+                                                        PointerByReference vallen,
                                                         PointerByReference errptr);
     public static native PointerByReference leveldb_get(LevelDB levelDB, ReadOptions options,
                                                         byte[] key, int keylen,
-                                                        IntByReference vallen,
+                                                        PointerByReference vallen,
                                                         PointerByReference errptr);
 
     public static native void leveldb_put(LevelDB levelDB, WriteOptions options,
@@ -163,7 +162,7 @@ class LevelDBNative {
     public static native FilterPolicy leveldb_filterpolicy_create_bloom(int bits_per_key);
 
     public interface CreateFilterFunc extends Callback {
-        void invoke(Pointer pointer, PointerByReference key_array, IntByReference key_length_array, int num_keys, IntByReference filter_length);
+        void invoke(Pointer pointer, PointerByReference key_array, PointerByReference key_length_array, int num_keys, PointerByReference filter_length);
     }
 
     //TODO: required `int` interface for fix problem with `long` on 32-bit Windows systems
@@ -194,9 +193,9 @@ class LevelDBNative {
 
     public static native void leveldb_iter_prev(Iterator iterator);
 
-    public static native PointerByReference leveldb_iter_key(Iterator iterator, IntByReference klen);
+    public static native PointerByReference leveldb_iter_key(Iterator iterator, PointerByReference klen);
 
-    public static native PointerByReference leveldb_iter_value(Iterator iterator, IntByReference vlen);
+    public static native PointerByReference leveldb_iter_value(Iterator iterator, PointerByReference vlen);
 
     public static native void leveldb_iter_get_error(Iterator iterator, PointerByReference errptr);
 

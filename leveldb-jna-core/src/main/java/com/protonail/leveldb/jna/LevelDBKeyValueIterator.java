@@ -1,6 +1,6 @@
 package com.protonail.leveldb.jna;
 
-import com.sun.jna.ptr.IntByReference;
+import com.sun.jna.Native;
 import com.sun.jna.ptr.PointerByReference;
 
 public class LevelDBKeyValueIterator extends LevelDBIteratorBase<KeyValuePair> {
@@ -13,14 +13,25 @@ public class LevelDBKeyValueIterator extends LevelDBIteratorBase<KeyValuePair> {
         levelDB.checkDatabaseOpen();
         checkIteratorOpen();
 
-        IntByReference resultLength = new IntByReference();
-        PointerByReference result;
+        PointerByReference resultPointer;
+        PointerByReference resultLengthPointer = new PointerByReference();
+        long resultLength;
 
-        result = LevelDBNative.leveldb_iter_key(iterator, resultLength);
-        byte[] key = result.getPointer().getByteArray(0, resultLength.getValue());
+        resultPointer = LevelDBNative.leveldb_iter_key(iterator, resultLengthPointer);
+        if (Native.POINTER_SIZE == 8) {
+            resultLength = resultLengthPointer.getPointer().getLong(0);
+        } else {
+            resultLength = resultLengthPointer.getPointer().getInt(0);
+        }
+        byte[] key = resultPointer.getPointer().getByteArray(0, (int) resultLength);
 
-        result = LevelDBNative.leveldb_iter_value(iterator, resultLength);
-        byte[] value = result.getPointer().getByteArray(0, resultLength.getValue());
+        resultPointer = LevelDBNative.leveldb_iter_value(iterator, resultLengthPointer);
+        if (Native.POINTER_SIZE == 8) {
+            resultLength = resultLengthPointer.getPointer().getLong(0);
+        } else {
+            resultLength = resultLengthPointer.getPointer().getInt(0);
+        }
+        byte[] value = resultPointer.getPointer().getByteArray(0, (int) resultLength);
 
         LevelDBNative.leveldb_iter_next(iterator);
 

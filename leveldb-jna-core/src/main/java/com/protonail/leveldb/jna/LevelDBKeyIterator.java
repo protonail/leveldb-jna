@@ -1,6 +1,6 @@
 package com.protonail.leveldb.jna;
 
-import com.sun.jna.ptr.IntByReference;
+import com.sun.jna.Native;
 import com.sun.jna.ptr.PointerByReference;
 
 public class LevelDBKeyIterator extends LevelDBIteratorBase<byte[]> {
@@ -13,9 +13,17 @@ public class LevelDBKeyIterator extends LevelDBIteratorBase<byte[]> {
         levelDB.checkDatabaseOpen();
         checkIteratorOpen();
 
-        IntByReference resultLength = new IntByReference();
-        PointerByReference pointerToKey = LevelDBNative.leveldb_iter_key(iterator, resultLength);
-        byte[] key = pointerToKey.getPointer().getByteArray(0, resultLength.getValue());
+        PointerByReference resultLengthPointer = new PointerByReference();
+        PointerByReference resultPointer = LevelDBNative.leveldb_iter_key(iterator, resultLengthPointer);
+
+        long resultLength;
+        if (Native.POINTER_SIZE == 8) {
+            resultLength = resultLengthPointer.getPointer().getLong(0);
+        } else {
+            resultLength = resultLengthPointer.getPointer().getInt(0);
+        }
+
+        byte[] key = resultPointer.getPointer().getByteArray(0, (int) resultLength);
 
         LevelDBNative.leveldb_iter_next(iterator);
 
