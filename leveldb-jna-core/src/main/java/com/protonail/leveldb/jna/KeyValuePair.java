@@ -13,15 +13,7 @@ public class KeyValuePair {
         return key;
     }
 
-    public void setKey(byte[] key) {
-        this.key = key;
-    }
-
     public byte[] getValue() {
         return value;
-    }
-
-    public void setValue(byte[] value) {
-        this.value = value;
     }
 }
