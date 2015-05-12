@@ -1,5 +1,63 @@
 # Usage
 
+## Maven dependencies
+
+Add Maven dependencies to your pom.xml:
+
+```xml
+<dependency>
+    <groupId>com.protonail.leveldb-jna</groupId>
+    <artifactId>leveldb-jna-core</artifactId>
+    <version>x.x.x</version>
+</dependency>
+
+<dependency>
+    <groupId>com.protonail.leveldb-jna</groupId>
+    <artifactId>leveldb-jna-native</artifactId>
+    <version>x.x.x</version>
+    <classifier>osx</classifier>
+</dependency>
+<dependency>
+    <groupId>com.protonail.leveldb-jna</groupId>
+    <artifactId>leveldb-jna-native</artifactId>
+    <version>x.x.x</version>
+    <classifier>windows-x86_64</classifier>
+</dependency>
+<dependency>
+    <groupId>com.protonail.leveldb-jna</groupId>
+    <artifactId>leveldb-jna-native</artifactId>
+    <version>x.x.x</version>
+    <classifier>windows-x86</classifier>
+</dependency>
+<dependency>
+    <groupId>com.protonail.leveldb-jna</groupId>
+    <artifactId>leveldb-jna-native</artifactId>
+    <version>x.x.x</version>
+    <classifier>linux-x86_64</classifier>
+</dependency>
+<dependency>
+    <groupId>com.protonail.leveldb-jna</groupId>
+    <artifactId>leveldb-jna-native</artifactId>
+    <version>x.x.x</version>
+    <classifier>linux-x86</classifier>
+</dependency>
+```
+
+If you don't want to use native libraries for some platforms (see `classifier` tag) then just remove theirs dependencies.
+
+If you want to use snapshot version (with `-SNAPSHOR` suffix) then just add snapshot repository to your pom.xml:
+
+```xml
+<repositories>
+    ...
+    <repository>
+        <id>sonatype</id>
+        <url>https://oss.sonatype.org/content/groups/public</url>
+    </repository>
+    ...
+</repositories>
+```
+
 ## Create LevelDB database
 
 ```java
