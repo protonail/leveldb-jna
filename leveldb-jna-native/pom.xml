@@ -19,7 +19,6 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
-                    <classifier>${platform.classifier}-sources</classifier>
                     <excludeResources>true</excludeResources>
                 </configuration>
                 <executions>
@@ -45,7 +44,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <classifier>${platform.classifier}-javadoc</classifier>
+                            <classifier>javadoc</classifier>
                             <classesDirectory>src/main/java</classesDirectory>
                         </configuration>
                     </execution>
