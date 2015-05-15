@@ -44,6 +44,12 @@
     <url>https://github.com/protonail/leveldb-jna/issues</url>
   </issueManagement>
 
+  <scm>
+    <connection>scm:git:git://github.com/protonail/leveldb-jna.git</connection>
+    <developerConnection>scm:git:git@github.com:protonail/leveldb-jna.git</developerConnection>
+    <url>https://github.com/protonail/leveldb-jna</url>
+  </scm>
+
   <modules>
     <module>leveldb-jna-core</module>
     <module>leveldb-jna-native</module>
