@@ -15,6 +15,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.revision>master</project.revision>
   </properties>
 
   <build>
@@ -26,6 +27,20 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Implementation-Vendor>Protonail</Implementation-Vendor>
+              <Implementation-Version>${project.version}</Implementation-Version>
+              <Implementation-Revision>${project.revision}</Implementation-Revision>
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
 
