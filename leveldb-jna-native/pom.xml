@@ -34,10 +34,30 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.6</version>
-                <configuration>
-                    <classifier>${platform.classifier}</classifier>
-                </configuration>
                 <executions>
+                    <execution>
+                        <id>native</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>${platform.classifier}</classifier>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classesDirectory>src/main/java</classesDirectory>
+                            <excludes>
+                                <exclude>src/main/resources</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>empty-javadoc</id>
                         <phase>package</phase>

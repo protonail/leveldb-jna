@@ -1,1 +1,1 @@
-# This is JAR with native library only
+# This is fake JAR to pass idiotic Sonatype Nexus validation
