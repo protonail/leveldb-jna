@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/protonail/leveldb-jna.svg?branch=master)](https://travis-ci.org/protonail/leveldb-jna)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.protonail.leveldb-jna/leveldb-jna/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.protonail.leveldb-jna/leveldb-jna)
 
 # Java JNA (not JNI) adapter to LevelDB
 
