@@ -15,6 +15,10 @@ leveldb-jna is Java JNA adapter to LevelDB key-value database.
 
 See examples of usage [here](USAGE.md).
 
+## Demo
+
+* [Keylord](http://protonail.com/products/keylord) - cross-platform GUI application for key-value databases.
+
 ## Build
 
 Build process described [here](BUILD.md).
