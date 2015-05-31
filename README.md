@@ -17,7 +17,7 @@ See examples of usage [here](USAGE.md).
 
 ## Demo
 
-leveldb-jna is used in these applications or libraries:
+leveldb-jna is used in these applications and libraries:
 
 * [Keylord](http://protonail.com/products/keylord) - cross-platform GUI application for key-value databases.
 
