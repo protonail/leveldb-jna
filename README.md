@@ -9,13 +9,15 @@ leveldb-jna is Java JNA adapter to LevelDB key-value database.
 
 * OS X
 * Linux x86/x64
-* Windows x86/x64
+* Windows x86/x64 (backport from [Bitcoin](https://github.com/bitcoin/bitcoin/tree/master/src/leveldb) project)
 
-## Usage
+## Examples
 
 See examples of usage [here](USAGE.md).
 
 ## Demo
+
+leveldb-jna is used in these applications or libraries:
 
 * [Keylord](http://protonail.com/products/keylord) - cross-platform GUI application for key-value databases.
 
