@@ -92,6 +92,16 @@ You should repeat these steps for each platform.
      mvn deploy -DaltSnapshotDeploymentRepository=<altSnapshotDeploymentRepository> -DaltReleaseDeploymentRepository=<altReleaseDeploymentRepository> -pl leveldb-jna-native
      ```
      
-     where _altSnapshotDeploymentRepository_ and _altReleaseDeploymentRepository_ your Maven repositories (i.e. run on Nexus Sonatype). Details is [here](https://maven.apache.org/plugins/maven-deploy-plugin/deploy-mojo.html).
-     
+     where _altSnapshotDeploymentRepository_ and _altReleaseDeploymentRepository_ is your Maven repositories (i.e. run on Nexus Sonatype). Details is [here](https://maven.apache.org/plugins/maven-deploy-plugin/deploy-mojo.html).
+
+## Build Core Library
+
+1. Build Core Java library and deploy it to remote Maven repository:
+
+     ```
+     mvn deploy -DaltSnapshotDeploymentRepository=<altSnapshotDeploymentRepository> -DaltReleaseDeploymentRepository=<altReleaseDeploymentRepository> -pl leveldb-jna-core
+     ```
+
+     where _altSnapshotDeploymentRepository_ and _altReleaseDeploymentRepository_ is your Maven repositories (i.e. run on Nexus Sonatype). Details is [here](https://maven.apache.org/plugins/maven-deploy-plugin/deploy-mojo.html).
+
 ## That's all.
