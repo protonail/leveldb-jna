@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.protonail.leveldb-jna</groupId>
         <artifactId>leveldb-jna</artifactId>
-        <version>1.18.0</version>
+        <version>1.18.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>leveldb-jna-core</artifactId>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.protonail.leveldb-jna</groupId>
             <artifactId>leveldb-jna-native</artifactId>
-            <version>1.18.0</version>
+            <version>1.18.1-SNAPSHOT</version>
             <classifier>${platform.classifier}</classifier>
             <scope>test</scope>
         </dependency>

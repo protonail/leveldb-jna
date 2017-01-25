@@ -6,7 +6,7 @@
 
   <groupId>com.protonail.leveldb-jna</groupId>
   <artifactId>leveldb-jna</artifactId>
-  <version>1.18.0</version>
+  <version>1.18.1-SNAPSHOT</version>
 
   <url>https://github.com/protonail/leveldb-jna</url>
   <description>Java JNA (not JNI) adapter for LevelDB</description>
