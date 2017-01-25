@@ -46,7 +46,12 @@ public class LevelDB implements AutoCloseable {
             resultLength = resultLengthPointer.getPointer().getInt(0);
         }
 
-        return result != null ? result.getPointer().getByteArray(0, (int) resultLength) : null;
+        byte[] resultAsByteArray = null;
+        if (result != null) {
+            resultAsByteArray = result.getPointer().getByteArray(0, (int) resultLength);
+            LevelDBNative.leveldb_free(result.getPointer());
+        }
+        return resultAsByteArray;
     }
 
     public void put(byte[] key, byte[] value, LevelDBWriteOptions writeOptions) {
