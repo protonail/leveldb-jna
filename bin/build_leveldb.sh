@@ -25,7 +25,6 @@ echo Build Snappy
 echo --------------------
 
 cd $SNAPPY_HOME
-[[ "$OSTYPE" == "darwin"* ]] && patch -N $SNAPPY_HOME/autogen.sh $ROOT_HOME/patches/snappy/autogen.sh.osx.patch
 patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/snappy/configure.ac.noarch.patch
 [[ "$OSTYPE" == "msys" ]] && patch -N $SNAPPY_HOME/configure.ac $ROOT_HOME/patches/snappy/configure.ac.windows.patch
 [[ "$OSTYPE" == "msys" ]] && patch -N $SNAPPY_HOME/Makefile.am $ROOT_HOME/patches/snappy/Makefile.am.windows.patch
@@ -78,4 +77,4 @@ elif [[ "$OSTYPE" == "msys" ]]; then
 fi
 
 mkdir -p $ROOT_HOME/leveldb-jna-native/src/main/resources/$LEVELDB_ARCH/
-cp $LEVELDB_FILE $ROOT_HOME/leveldb-jna-native/src/main/resources/$LEVELDB_ARCH/$OUTPUT_LEVELDB_FILE
+cp $LEVELDB_HOME/out-shared/$LEVELDB_FILE $ROOT_HOME/leveldb-jna-native/src/main/resources/$LEVELDB_ARCH/$OUTPUT_LEVELDB_FILE
