@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.protonail.leveldb-jna</groupId>
+        <groupId>com.wavesplatform.leveldb-jna</groupId>
         <artifactId>leveldb-jna</artifactId>
-        <version>1.20.0</version>
+        <version>1.22.0</version>
     </parent>
 
     <artifactId>leveldb-jna-core</artifactId>
@@ -35,9 +35,9 @@
         <!-- LevelDB JNA Native Binaries (dependency for tests only) -->
 
         <dependency>
-            <groupId>com.protonail.leveldb-jna</groupId>
+            <groupId>com.wavesplatform.leveldb-jna</groupId>
             <artifactId>leveldb-jna-native</artifactId>
-            <version>1.20.0</version>
+            <version>1.22.0</version>
             <classifier>${platform.classifier}</classifier>
             <scope>test</scope>
         </dependency>

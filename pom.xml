@@ -4,9 +4,9 @@
   <packaging>pom</packaging>
   <name>root</name>
 
-  <groupId>com.protonail.leveldb-jna</groupId>
+  <groupId>com.wavesplatform.leveldb-jna</groupId>
   <artifactId>leveldb-jna</artifactId>
-  <version>1.20.0</version>
+  <version>1.22.0</version>
 
   <url>https://github.com/protonail/leveldb-jna</url>
   <description>Java JNA (not JNI) adapter for LevelDB</description>

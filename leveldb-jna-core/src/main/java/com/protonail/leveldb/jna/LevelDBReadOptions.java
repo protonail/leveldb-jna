@@ -5,6 +5,7 @@ public class LevelDBReadOptions implements AutoCloseable {
 
     private boolean verifyChecksum = false;
     private boolean fillCache = true;
+    private LevelDBSnapshot snapshot;
 
     public LevelDBReadOptions() {
         readOptions = LevelDBNative.leveldb_readoptions_create();
@@ -12,7 +13,7 @@ public class LevelDBReadOptions implements AutoCloseable {
         setFillCache(fillCache);
     }
 
-    public void close() {
+    public synchronized void close() {
         checkReadOptionsOpen();
 
         LevelDBNative.leveldb_readoptions_destroy(readOptions);
@@ -39,6 +40,17 @@ public class LevelDBReadOptions implements AutoCloseable {
 
         this.fillCache = fillCache;
         LevelDBNative.leveldb_readoptions_set_fill_cache(readOptions, (byte) (fillCache ? 1 : 0));
+    }
+
+    public LevelDBSnapshot getSnapshot() {
+        return snapshot;
+    }
+
+    public void setSnapshot(LevelDBSnapshot snapshot) {
+        checkReadOptionsOpen();
+
+        this.snapshot = snapshot;
+        LevelDBNative.leveldb_readoptions_set_snapshot(readOptions, snapshot.getSnapshot());
     }
 
     protected void checkReadOptionsOpen() {

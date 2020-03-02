@@ -164,6 +164,11 @@ public class LevelDB implements AutoCloseable {
         }
     }
 
+    public LevelDBSnapshot createSnapshot() {
+        final LevelDBNative.Snapshot snapshot = LevelDBNative.leveldb_create_snapshot(levelDB);
+        return new LevelDBSnapshot(levelDB, snapshot);
+    }
+
     public static void repair(String levelDBDirectory, LevelDBOptions options) {
         options.checkOptionsOpen();
 
