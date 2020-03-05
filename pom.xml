@@ -6,7 +6,7 @@
 
   <groupId>com.wavesplatform.leveldb-jna</groupId>
   <artifactId>leveldb-jna</artifactId>
-  <version>1.22.0-SNAPSHOT</version>
+  <version>1.22.0</version>
 
   <url>https://github.com/protonail/leveldb-jna</url>
   <description>Java JNA (not JNI) adapter for LevelDB</description>
@@ -81,18 +81,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>false</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
@@ -136,13 +124,11 @@
         <version>1.6.8</version>
         <extensions>true</extensions>
         <configuration>
-          <serverId>protonail-remote</serverId>
+          <serverId>ossrh</serverId>
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-
           <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
           <autoReleaseAfterClose>false</autoReleaseAfterClose>
-
-          <stagingProfileId>11f32912fe469</stagingProfileId>
+          <stagingProfileId>126f55826efd5a</stagingProfileId>
         </configuration>
       </plugin>
     </plugins>
