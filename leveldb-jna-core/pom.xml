@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.wavesplatform.leveldb-jna</groupId>
         <artifactId>leveldb-jna</artifactId>
-        <version>1.22.1</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>leveldb-jna-core</artifactId>
@@ -31,17 +31,6 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- LevelDB JNA Native Binaries (dependency for tests only) -->
-
-        <dependency>
-            <groupId>com.wavesplatform.leveldb-jna</groupId>
-            <artifactId>leveldb-jna-native</artifactId>
-            <version>1.22.1</version>
-            <classifier>${platform.classifier}</classifier>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -75,4 +64,20 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>test</id>
+            <dependencies>
+                <!-- LevelDB JNA Native Binaries (dependency for tests only) -->
+
+                <dependency>
+                    <groupId>com.wavesplatform.leveldb-jna</groupId>
+                    <artifactId>leveldb-jna-native</artifactId>
+                    <version>${revision}</version>
+                    <classifier>${platform.classifier}</classifier>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>

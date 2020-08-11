@@ -1,0 +1,5 @@
+set(CMAKE_SYSTEM_NAME Windows)
+set(CMAKE_C_COMPILER i686-w64-mingw32-gcc-posix CACHE STRING "C compiler" FORCE)
+set(CMAKE_C_FLAGS "-m32" CACHE STRING "C compiler flags" FORCE)
+set(CMAKE_CXX_COMPILER i686-w64-mingw32-g++-posix CACHE STRING "C++ compiler" FORCE)
+set(CMAKE_CXX_FLAGS "-m32" CACHE STRING "C++ compiler flags" FORCE)

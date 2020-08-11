@@ -5,8 +5,9 @@
 .idea
 *.iml
 
-# Maven staff
+# Maven stuff
 target/
+.flattened-pom.xml
 
 # Temp
 tmp/
