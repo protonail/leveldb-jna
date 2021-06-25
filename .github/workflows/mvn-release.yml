@@ -1,4 +1,4 @@
-name: Publish artfiacts to Sonatype Repo
+name: Build library
 
 on:
   push:
@@ -6,6 +6,9 @@ on:
       - master
     tags:
       - v[0-9].[0-9]+.[0-9]+
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build-native:
@@ -84,7 +87,18 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Publish Maven package
+      - name: Maven install natives
+        if: ${{ !env.SKIP_PUBLISH }}
+        uses: samuelmeuli/action-maven-publish@v1.4.0
+        with:
+          maven_goals_phases: install
+          maven_args: -pl leveldb-jna-native
+          gpg_private_key: ${{ secrets.OSSRH_GPG_KEY_ASCII }}
+          gpg_passphrase: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+      - name: Maven tests
+        run: |
+          mvn -P test test
+      - name: Maven publish package
         if: ${{ !env.SKIP_PUBLISH }}
         uses: samuelmeuli/action-maven-publish@v1.4.0
         with:

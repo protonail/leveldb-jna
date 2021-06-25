@@ -101,30 +101,30 @@ public class LevelDB implements AutoCloseable {
         return LevelDBNative.leveldb_property_value(levelDB, property);
     }
 
-    public long[] approximateSizes(Range ...ranges) {
+    public long[] approximateSizes(Range... ranges) {
         checkDatabaseOpen();
 
         if (ranges.length == 0)
             return new long[0];
 
-        Memory startKeys = new Memory(ranges.length * Pointer.SIZE);
-        Memory limitKeys = new Memory(ranges.length * Pointer.SIZE);
+        Memory startKeys = new Memory((long) ranges.length * Native.POINTER_SIZE);
+        Memory limitKeys = new Memory((long) ranges.length * Native.POINTER_SIZE);
 
         for (int i = 0; i < ranges.length; i++) {
             int startKeyLength = ranges[i].getStartKey().length;
             Memory startKeyMemory = new Memory(startKeyLength);
             startKeyMemory.write(0, ranges[i].getStartKey(), 0, startKeyLength);
 
-            startKeys.setPointer(i * Pointer.SIZE, startKeyMemory);
+            startKeys.setPointer((long) i * Native.POINTER_SIZE, startKeyMemory);
 
             int limitKeyLength = ranges[i].getLimitKey().length;
             Memory limitKeyMemory = new Memory(limitKeyLength);
             limitKeyMemory.write(0, ranges[i].getLimitKey(), 0, limitKeyLength);
 
-            limitKeys.setPointer(i * Pointer.SIZE, limitKeyMemory);
+            limitKeys.setPointer((long) i * Native.POINTER_SIZE, limitKeyMemory);
         }
 
-        Pointer sizes = new Memory(ranges.length * Native.getNativeSize(Long.TYPE));
+        Pointer sizes = new Memory((long) ranges.length * Native.getNativeSize(Long.TYPE));
         if (Native.POINTER_SIZE == 8) {
             long[] startLengths = new long[ranges.length];
             long[] limitLengths = new long[ranges.length];
