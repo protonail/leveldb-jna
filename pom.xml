@@ -2,7 +2,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
-    <name>root</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,8 +13,9 @@
     <artifactId>leveldb-jna</artifactId>
     <version>${revision}</version>
 
-    <url>https://github.com/wavesplatform/leveldb-jna</url>
+    <name>leveldb-jna</name>
     <description>Java JNA (not JNI) adapter for LevelDB</description>
+    <url>https://github.com/wavesplatform/leveldb-jna</url>
     <inceptionYear>2015</inceptionYear>
 
     <licenses>
