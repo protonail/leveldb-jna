@@ -14,19 +14,16 @@ jobs:
       target-path: ${{ matrix.platform }}-${{ matrix.arch }}
     strategy:
       matrix:
-        platform: [linux, win32, macos]
+        platform: [linux, win32, darwin]
         arch: [x86, x86-64, aarch64]
         exclude:
-          - platform: macos
+          - platform: darwin
             arch: x86
-          - platform: macos
-            arch: aarch64
           - platform: win32
             arch: aarch64
         include:
-          - platform: macos
+          - platform: darwin
             os: macos-latest
-            target-path: darwin
           - platform: linux
             os: ubuntu-20.04
           - platform: linux
@@ -45,7 +42,7 @@ jobs:
           java-version: 1.8
       - name: Install build tools
         if: ${{ matrix.extra-packages }}
-        run: sudo apt install -y ${{ matrix.extra-packages }}
+        run: sudo apt-get update && sudo apt-get install -y ${{ matrix.extra-packages }}
       - run: |
           git submodule init
           git submodule update
@@ -69,6 +66,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Check version
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         run: |
           mvn_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo ${{ github.ref }}

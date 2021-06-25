@@ -7,7 +7,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.revision>master</project.revision>
-        <revision>1.22.2</revision>
+        <revision>1.23.0</revision>
     </properties>
 
     <groupId>com.wavesplatform.leveldb-jna</groupId>

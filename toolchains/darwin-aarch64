@@ -1,0 +1,2 @@
+set(CMAKE_C_FLAGS "-target arm64-apple-darwin20.1.0" CACHE STRING "C compiler flags" FORCE)
+set(CMAKE_CXX_FLAGS "-target arm64-apple-darwin20.1.0" CACHE STRING "C++ compiler flags" FORCE)

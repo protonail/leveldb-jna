@@ -19,7 +19,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>4.5.1</version>
+            <version>5.8.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -74,7 +74,6 @@
                     <groupId>com.wavesplatform.leveldb-jna</groupId>
                     <artifactId>leveldb-jna-native</artifactId>
                     <version>${revision}</version>
-                    <classifier>${platform.classifier}</classifier>
                     <scope>test</scope>
                 </dependency>
             </dependencies>
