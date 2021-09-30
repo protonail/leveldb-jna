@@ -32,6 +32,15 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- LevelDB JNA Native Binaries (dependency for tests only) -->
+
+        <dependency>
+            <groupId>com.wavesplatform.leveldb-jna</groupId>
+            <artifactId>leveldb-jna-native</artifactId>
+            <version>${revision}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -64,20 +73,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>test</id>
-            <dependencies>
-                <!-- LevelDB JNA Native Binaries (dependency for tests only) -->
-
-                <dependency>
-                    <groupId>com.wavesplatform.leveldb-jna</groupId>
-                    <artifactId>leveldb-jna-native</artifactId>
-                    <version>${revision}</version>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 </project>

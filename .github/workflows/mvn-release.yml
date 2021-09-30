@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - master
+      - version-[0-9].[0-9]+.x
     tags:
       - v[0-9].[0-9]+.[0-9]+
   pull_request:
-    branches:
-      - master
 
 jobs:
   build-native:
@@ -28,13 +27,16 @@ jobs:
           - platform: darwin
             os: macos-latest
           - platform: linux
-            os: ubuntu-20.04
+            os: ubuntu-18.04
           - platform: linux
             arch: aarch64
             extra-packages: gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
           - platform: linux
             arch: x86
-            extra-packages: gcc-multilib g++-multilib
+            extra-packages: gcc-5 g++-5 gcc-5-multilib g++-5-multilib
+          - platform: linux
+            arch: x86-64
+            extra-packages: gcc-5 g++-5
           - platform: win32
             os: ubuntu-20.04
             extra-packages: mingw-w64
@@ -68,16 +70,28 @@ jobs:
     needs: [build-native]
     steps:
       - uses: actions/checkout@v2
-      - name: Check version
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - uses: actions/cache@v2
+        with:
+          key: ${{ hashFiles('pom.xml') }}
+          path: ~/.m2/repository
+      - name: Prepare version
+        id: maven-version
         run: |
           mvn_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo ${{ github.ref }}
-          echo $mvn_version
-          if [[ ${{github.ref}} != *"/tags/"* && $mvn_version != *"-SNAPSHOT" ]]; then
-            echo Deploy will be skipped
-            echo '::set-env name=SKIP_PUBLISH::true'
+          git_ref=${GITHUB_REF##*/}
+          pr_number=${{ github.event.number }}
+          if [[ $git_ref =~ v[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
+            if [[ v$mvn_version != $git_ref ]] ; then
+              echo Maven version $mvn_version does not match tag $git_ref
+              exit 1
+            fi
+          elif [[ $pr_number != "" && $mvn_version =~ -SNAPSHOT$ ]] ; then
+            pattern="s/(.+)-SNAPSHOT/\1-"$pr_number"-SNAPSHOT/g"
+            mvn_version=$(echo $mvn_version | sed -E $pattern)
+            mvn versions:set -DnewVersion=$mvn_version -DgenerateBackupPoms=false -q -DforceStdout
+          elif [[ ! $mvn_version =~ -SNAPSHOT$ ]] ; then
+            echo Refusing to publish non-snapshot version $mvn_version
+            echo '::set-output name=skip-publish::true'
           fi
       - uses: actions/download-artifact@v1
         with:
@@ -87,23 +101,10 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Maven install natives
-        if: ${{ !env.SKIP_PUBLISH }}
-        uses: samuelmeuli/action-maven-publish@v1.4.0
+      - uses: samuelmeuli/action-maven-publish@v1.4.0
+        if:
+          ${{ steps.maven-version.outputs.skip-publish != 'true' }}
         with:
-          maven_goals_phases: install
-          maven_args: -pl leveldb-jna-native
-          gpg_private_key: ${{ secrets.OSSRH_GPG_KEY_ASCII }}
-          gpg_passphrase: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
-      - name: Maven tests
-        run: |
-          mvn -P test test
-      - name: Maven publish package
-        if: ${{ !env.SKIP_PUBLISH }}
-        uses: samuelmeuli/action-maven-publish@v1.4.0
-        with:
-          maven_goals_phases: deploy
-          maven_args: -Dmaven.test.skip -pl leveldb-jna-native,leveldb-jna-core
           gpg_private_key: ${{ secrets.OSSRH_GPG_KEY_ASCII }}
           gpg_passphrase: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
           nexus_username: ${{ secrets.OSSRH_USERNAME }}
